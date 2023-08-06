@@ -1,0 +1,42 @@
+<script lang="ts">
+	// Modules
+	import { Picker } from 'emoji-mart';
+	import data from '@emoji-mart/data';
+	// Builtin
+	import { onMount } from 'svelte';
+	// Internal
+	import CustomMenu from '$lib/CustomMenu.svelte';
+	import { customizePicker, highlightKeyboarSelect } from '$lib/picker-customization';
+
+	let pickerElem: any, shadowRoot: any; // 🥲
+
+	function handleSelect(emojiData: any, e: Event) {
+		if (e instanceof KeyboardEvent) {
+			highlightKeyboarSelect(
+				shadowRoot.querySelector('button[aria-selected="true"][data-keyboard="true"]')
+			);
+		}
+		navigator.clipboard.writeText(emojiData.native);
+		window.play_sound();
+	}
+
+	onMount(() => {
+		pickerElem.appendChild(
+			new Picker({
+				data,
+				autoFocus: true,
+				dynamicWidth: true,
+				onEmojiSelect: handleSelect
+			})
+		);
+		shadowRoot = document.querySelector('em-emoji-picker')?.shadowRoot;
+		if (!shadowRoot) {
+			console.error('Failing finding emoji-mart element.');
+			return;
+		}
+		customizePicker(shadowRoot);
+	});
+</script>
+
+<div bind:this={pickerElem} />
+<CustomMenu {shadowRoot} />
