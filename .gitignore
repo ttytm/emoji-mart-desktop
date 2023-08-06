@@ -1,0 +1,34 @@
+# == V
+# Binaries for programs and plugins
+main
+*.exe
+*.exe~
+*.so
+*.dylib
+*.dll
+
+# Ignore binary output folders
+# bin/
+dist/
+# appimage*/
+
+# Ignore common editor/system specific metadata
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# == Svelte
+.DS_Store
+node_modules
+build
+.svelte-kit
+package
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# == Common
+# Env
+.env
+.env.*
+!.env.example
