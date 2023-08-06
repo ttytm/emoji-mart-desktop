@@ -15,12 +15,12 @@ pub fn play_sound(_ &char, _ &char, app &App) {
 	}
 }
 
-pub fn toggle_audio(event_num &char, raw_args &char, mut app App) {
+pub fn toggle_audio(event_id &char, raw_args &char, mut app App) {
 	app.settings.sound = !app.settings.sound
 	if app.settings.sound {
-		play_sound(event_num, raw_args, app)
+		play_sound(event_id, raw_args, app)
 	}
-	app.window.result(event_num, .value, json.encode(app.settings.sound))
+	app.window.result(event_id, .value, json.encode(app.settings.sound))
 }
 
 pub fn open_in_browser(_ &char, raw_args &char, app &App) {
