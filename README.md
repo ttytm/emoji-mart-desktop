@@ -1,7 +1,7 @@
 # Emoji Mart Desktop App
 
-An emoji picker desktop application - built to serve as an example of using webview with a modern web framework.
-Nevertheless, it is a real and capable application. So if you just want to use it, nothing should stop you from doing so
+An emoji picker desktop application - built to serve as an example of using [webview](https://github.com/ttytm/webview) with a modern web framework.
+Nevertheless, it is a real and capable application. So if you just want to use it, nothing should stop you from doing so.
 
 ## Application - Usage
 
@@ -14,7 +14,7 @@ It is developed with focus on systems running GNU Linux but can also be used on 
 
 ### Usage
 
-- Linux: Download an Appimage from the release page
+- Linux: Download an Appimage from the [releases](https://github.com/ttytm/emoji-mart-desktop/releases) page.
 - macOS: There is no bundling atm. So it is required to self compile it and keep the binary and ui files side by side.</sub>
 
 ## Webview Example - Building and Development
@@ -27,7 +27,7 @@ The following steps show how to build and run the application.
 
 - V Webview Binding; [ttytm/webview](https://github.com/ttytm/webview)
 
-- Miniaudio as a V Module dependency that this app is using
+- Miniaudio as a V module dependency that this app is using
 
   ```
   v install --git https://github.com/Larpon/miniaudio
@@ -35,7 +35,7 @@ The following steps show how to build and run the application.
 
 ### Building
 
-If you just want to build the appliation for usage you can now run `./build.vsh`. \
+If you just want to build the application for usage you can now run `./build.vsh`. \
 The `dist/` directory will contain the build output. Run `./build.vsh --appimage` to build the AppImage on Linux.
 
 ### Building and Running the App in a Development Context
@@ -46,7 +46,7 @@ However, there comes a point where we want to connect our V program and the UI. 
 #### Example 1 - run a vite dev server and connect to it
 
 When connecting to a vite dev server features like hot reloading are preserved.
-Just like in the browser most changes on UI will be immediately reflected in the webview.
+Just like in the browser most changes on the UI will be immediately reflected in the application window.
 
 - Run the dev server in one terminal instance
 
@@ -85,7 +85,7 @@ This is the regular build approach and what our final app is doing.
 
 <br>
 
-I hope this quick start guide and the examples in the repositories source code help on your the way to release your own UI project.
+I hope this quick start guide and the examples in the repositories source code help on the way to release your own UI project.
 
 ## Credits
 
