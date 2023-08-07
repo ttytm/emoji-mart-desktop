@@ -11,7 +11,7 @@ declare global {
 
 declare module 'svelte-popover';
 
-// Webview funtions
+// Webview functions
 declare function play_sound(): void;
 declare function toggle_audio(): Promise<bool>;
 declare function open_in_browser(uri: string): void;
