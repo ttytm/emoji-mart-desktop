@@ -30,7 +30,7 @@ const (
 fn main() {
 	mut app := App{
 		window: webview.create(
-			debug: $if prod { true } $else { false }
+			debug: $if prod { false } $else { true }
 		)
 	}
 	$if dev ? {
