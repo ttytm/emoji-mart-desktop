@@ -27,12 +27,6 @@ The following steps show how to build and run the application.
 
 - V Webview Binding; [ttytm/webview](https://github.com/ttytm/webview)
 
-- Miniaudio as a V module dependency that this app is using
-
-  ```
-  v install --git https://github.com/Larpon/miniaudio
-  ```
-
 ### Building
 
 If you just want to build the application for usage you can now run `./build.vsh`. \
@@ -56,7 +50,7 @@ Just like in the browser most changes on the UI will be immediately reflected in
   npm run dev
   ```
 
-- Run the app in a another terminal - connecting to the UI on the running vite dev server.
+- Run the app in a another terminal - connecting to the UI on the running vite dev server
 
   ```sh
   v -d dev run .
@@ -70,14 +64,14 @@ Just like in the browser most changes on the UI will be immediately reflected in
 
 This is the regular build approach and what our final app is doing.
 
-- Build the UI - the App uses SvelteKit as a static site generator.
+- Build the UI - using SvelteKit as a static site generator
 
   ```sh
   # npm i --prefix ui/
   npm run build --prefix ui/
   ```
 
-- Run the app - using vweb(or e.g. serve) to serve the previously build files locally and connect to it via webview.
+- Run the app - using vweb(or e.g. serve) to serve the previously build files locally and connect to it via webview
 
   ```sh
   v run .
@@ -89,5 +83,5 @@ I hope this quick start guide and the examples in the repositories source code h
 
 ## Credits
 
-- The app uses on the great work of [missive/emoji-mart](https://github.com/missive/emoji-mart).
+- The app uses on the great work of [missive/emoji-mart](https://github.com/missive/emoji-mart)
 - The icon used for the AppImage comes from [microsoft/fluentui-emoji](https://github.com/microsoft/fluentui-emoji)
