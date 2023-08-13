@@ -1,6 +1,6 @@
 # == V
 # Binaries for programs and plugins
-main
+emoji-picker
 *.exe
 *.exe~
 *.so
@@ -8,9 +8,7 @@ main
 *.dll
 
 # Ignore binary output folders
-# bin/
 dist/
-# appimage*/
 
 # Ignore common editor/system specific metadata
 .DS_Store
