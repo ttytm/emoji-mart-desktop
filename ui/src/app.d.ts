@@ -16,7 +16,6 @@ type Config = {
 };
 
 // Webview functions
-declare function play_sound(): void;
-declare function open_in_browser(uri: string): void;
 declare function get_config(): Promise<Config>;
 declare function toggle_audio(): Promise<bool>;
+declare function open_in_browser(uri: string): void;
