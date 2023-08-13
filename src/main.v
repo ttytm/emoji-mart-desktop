@@ -1,15 +1,12 @@
 import webview { Webview }
 import os
 
+[heap]
 struct App {
 	window &Webview
 mut:
-	port     int
-	proc     os.Process
-	settings struct {
-	mut:
-		sound bool = true
-	}
+	port   int
+	config Config
 }
 
 const (
@@ -33,6 +30,8 @@ fn main() {
 			debug: $if prod { false } $else { true }
 		)
 	}
+	app.load_config() or { panic('Failed loading config. ${err}') }
+	os.signal_opt(.int, app.handle_interrupt)!
 	$if dev ? {
 		// `v -d dev run .` aims to connect to an already running `vite dev` server.
 		// (Run `npm run dev` in the `ui/` dir in another terminal.)
@@ -46,6 +45,7 @@ fn main() {
 	}
 	app.run()
 	app.window.destroy()
+	app.save_config()
 }
 
 fn (mut app App) run() {
@@ -54,4 +54,9 @@ fn (mut app App) run() {
 	app.window.set_size(352, 435, .@none)
 	app.window.navigate('http://localhost:${app.port}')
 	app.window.run()
+}
+
+fn (mut app App) handle_interrupt(signal os.Signal) {
+	app.save_config()
+	exit(0)
 }

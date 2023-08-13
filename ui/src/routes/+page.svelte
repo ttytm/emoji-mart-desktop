@@ -7,6 +7,7 @@
 	// Internal
 	import CustomMenu from '$lib/CustomMenu.svelte';
 	import { customizePicker, highlightKeyboarSelect } from '$lib/picker-customization';
+	import { config } from '$lib/stores';
 
 	let pickerElem: any, shadowRoot: any; // 🥲
 
@@ -20,7 +21,7 @@
 		window.play_sound();
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		pickerElem.appendChild(
 			new Picker({
 				data,
@@ -35,6 +36,7 @@
 			return;
 		}
 		customizePicker(shadowRoot);
+		$config = await get_config();
 	});
 </script>
 
