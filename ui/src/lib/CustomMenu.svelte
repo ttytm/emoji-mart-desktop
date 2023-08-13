@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import Popover from 'svelte-popover';
+	import { config } from '$lib/stores';
 
 	export let shadowRoot: any;
-	let audio = true;
 	let menuOpen = false;
 
 	function handleEscape(e: KeyboardEvent) {
@@ -32,7 +32,7 @@
 	}
 
 	async function toggleAudio() {
-		audio = await window.toggle_audio();
+		$config.audio = await window.toggle_audio();
 	}
 
 	$: if (menuOpen) document.addEventListener('keydown', handleEscape);
@@ -52,7 +52,7 @@
 		>
 			<div>
 				<button on:click={toggleAudio} aria-hidden="true" tabindex="-1" class="option">
-					{#if audio}
+					{#if $config.audio}
 						<Icon icon="fa-solid:volume-up" />
 					{:else}
 						<Icon icon="fa-solid:volume-mute" />
