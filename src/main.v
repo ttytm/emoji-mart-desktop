@@ -10,18 +10,16 @@ mut:
 }
 
 const (
-	// Currently we'll encounter a bug when splitting these comptime consts among files,
-	// therefore we'll keep them here for now.
+	// Currently we'll encounter a bug when splitting a comptime constant and
+	// other constants among files, therefore we'll keep them here for now.
+	// E.g. `v -d appimage .` would error, when moving the cfg consts to `config.v`.
 	ui_path = $if appimage ? {
 		os.getenv('APPDIR') + '/usr/share/ui/build'
 	} $else {
 		'ui/build'
 	}
-	sound_file_path = $if appimage ? {
-		os.getenv('APPDIR') + '/usr/share/assets/pop.wav'
-	} $else {
-		'assets/pop.wav'
-	}
+	cfg_dir  = os.config_dir() or { panic(err) } + '/emoji-mart'
+	cfg_file = cfg_dir + '/emoji-mart.toml'
 )
 
 fn main() {

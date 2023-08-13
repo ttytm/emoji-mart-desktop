@@ -8,8 +8,10 @@
 	import CustomMenu from '$lib/CustomMenu.svelte';
 	import { customizePicker, highlightKeyboarSelect } from '$lib/picker-customization';
 	import { config } from '$lib/stores';
+	import pop from '$lib/assets/pop.wav';
 
 	let pickerElem: any, shadowRoot: any; // 🥲
+	let selectSound: HTMLAudioElement;
 
 	function handleSelect(emojiData: any, e: Event) {
 		if (e instanceof KeyboardEvent) {
@@ -18,7 +20,7 @@
 			);
 		}
 		navigator.clipboard.writeText(emojiData.native);
-		window.play_sound();
+		if ($config.audio) selectSound.play();
 	}
 
 	onMount(async () => {
@@ -36,9 +38,10 @@
 			return;
 		}
 		customizePicker(shadowRoot);
+		selectSound = new Audio(pop);
 		$config = await get_config();
 	});
 </script>
 
 <div bind:this={pickerElem} />
-<CustomMenu {shadowRoot} />
+<CustomMenu {shadowRoot} {selectSound} />

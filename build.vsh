@@ -84,7 +84,6 @@ fn build_appimage() ! {
 	cp_all('dist/emoji-mart', 'dist/appimage/AppDir/usr/bin/', false)!
 	cp('assets/AppImageBuilder.yml', 'dist/appimage/AppImageBuilder.yml')!
 	cp('assets/emoji-mart.png', 'dist/appimage/AppDir/usr/share/icons/emoji-mart.png')!
-	cp('assets/pop.wav', 'dist/appimage/AppDir/usr/share/assets/pop.wav')!
 	exec(which('appimage-builder') or { panic('Failed finding appimage-builder.') }, '${@VMODROOT}/dist/appimage',
 		['--recipe', 'AppImageBuilder.yml', '--skip-tests'])
 }

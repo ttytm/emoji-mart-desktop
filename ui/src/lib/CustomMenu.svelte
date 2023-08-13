@@ -5,6 +5,7 @@
 
 	export let shadowRoot: any;
 	let menuOpen = false;
+	export let selectSound: HTMLAudioElement;
 
 	function handleEscape(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
@@ -33,6 +34,7 @@
 
 	async function toggleAudio() {
 		$config.audio = await window.toggle_audio();
+		if ($config.audio) selectSound.play();
 	}
 
 	$: if (menuOpen) document.addEventListener('keydown', handleEscape);
