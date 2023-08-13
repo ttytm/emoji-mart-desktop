@@ -4,11 +4,11 @@
 
 	export let shadowRoot: any;
 	let audio = true;
-	let open = false;
+	let menuOpen = false;
 
 	function handleEscape(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
-			open = false;
+			menuOpen = false;
 			shadowRoot?.removeEventListener('keydown', handleEscape);
 		}
 	}
@@ -35,20 +35,20 @@
 		audio = await window.toggle_audio();
 	}
 
-	$: if (open) document.addEventListener('keydown', handleEscape);
+	$: if (menuOpen) document.addEventListener('keydown', handleEscape);
 </script>
 
 <div id="custom-settings">
-	<Popover arrow={false} bind:open>
-		<button id="custom-settings__menu-btn" class={open ? 'open' : 'close'} slot="target">
+	<Popover arrow={false} bind:open={menuOpen}>
+		<button id="custom-settings__menu-btn" class={menuOpen ? 'open' : 'close'} slot="target">
 			<Icon icon="heroicons-solid:menu" width="20" id="custom-settings__menu-btn__svg" />
 		</button>
 		<div
 			dir="ltr"
 			aria-label="Settings"
-			class="menu {open ? 'open' : 'close'}"
+			class="menu {menuOpen ? 'open' : 'close'}"
 			slot="content"
-			use:clickOutside={() => (open = false)}
+			use:clickOutside={() => (menuOpen = false)}
 		>
 			<div>
 				<button on:click={toggleAudio} aria-hidden="true" tabindex="-1" class="option">
@@ -61,7 +61,10 @@
 				</button>
 			</div>
 			<div>
-				<button on:click={() => window.open_in_browser('https://github.com/ttytm/emoji-mart-desktop')} class="option">
+				<button
+					on:click={() => window.open_in_browser('https://github.com/ttytm/emoji-mart-desktop')}
+					class="option"
+				>
 					<Icon icon="simple-icons:github" />
 					<span class="margin-small-lr"> GitHub</span>
 				</button>
