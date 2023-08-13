@@ -18,15 +18,12 @@ function setKeymaps(shadowRoot: ShadowRoot) {
 	// Keyboard shortcut indicator
 	const shortcutIndicator = document.createElement('div');
 	shortcutIndicator.setAttribute('id', 'search-keys');
+	// The searchbox is autofocus so we initially hide the shortcut indicator.
 	shortcutIndicator.classList.add('hide');
 	shortcutIndicator.innerHTML = '<div><kbd>/</kbd></div>';
 	searchInput.parentElement?.appendChild(shortcutIndicator);
-	searchInput.addEventListener('focus', () => {
-		shortcutIndicator.classList.add('hide');
-	});
-	searchInput.addEventListener('blur', () => {
-		shortcutIndicator.classList.remove('hide');
-	});
+	searchInput.addEventListener('focus', () => shortcutIndicator.classList.add('hide'));
+	searchInput.addEventListener('blur', () => shortcutIndicator.classList.remove('hide'));
 }
 
 function appendSettings(shadowRoot: ShadowRoot) {
