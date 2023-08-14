@@ -5,8 +5,8 @@ import os
 struct App {
 	window &Webview
 mut:
-	port   int
 	config Config
+	port   int
 }
 
 const (
