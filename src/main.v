@@ -28,8 +28,6 @@ fn main() {
 			debug: $if prod { false } $else { true }
 		)
 	}
-	app.load_config() or { panic('Failed loading config. ${err}') }
-	os.signal_opt(.int, app.handle_interrupt)!
 	$if dev ? {
 		// `v -d dev run .` aims to connect to an already running `vite dev` server.
 		// (Run `npm run dev` in the `ui/` dir in another terminal.)
@@ -41,17 +39,19 @@ fn main() {
 	} $else {
 		app.serve()
 	}
+	os.signal_opt(.int, app.handle_interrupt)!
 	app.run()
-	app.window.destroy()
-	app.save_config()
 }
 
 fn (mut app App) run() {
+	app.load_config() or { panic('Failed loading config. ${err}') }
 	app.bind()
 	app.window.set_title('Emoji Mart')
 	app.window.set_size(352, 435, .@none)
 	app.window.navigate('http://localhost:${app.port}')
 	app.window.run()
+	app.window.destroy()
+	app.save_config()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
