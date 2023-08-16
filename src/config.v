@@ -6,6 +6,11 @@ mut:
 	audio bool
 }
 
+const (
+	cfg_dir  = os.config_dir() or { panic(err) } + '/emoji-mart'
+	cfg_file = cfg_dir + '/emoji-mart.toml'
+)
+
 pub fn (cfg Config) to_toml() string {
 	mut mp := map[string]toml.Any{}
 	mp['audio'] = toml.Any(cfg.audio)

@@ -7,6 +7,12 @@ struct Context {
 	vweb.Context
 }
 
+const ui_path = $if appimage ? {
+	os.getenv('APPDIR') + '/usr/share/ui/build'
+} $else {
+	'ui/build'
+}
+
 pub fn (mut ctx Context) index() vweb.Result {
 	return ctx.html(os.read_file('${ui_path}/index.html') or { panic(err) })
 }
