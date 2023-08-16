@@ -19,7 +19,7 @@ jobs:
       - name: Setup webview
         run: |
           v install --git https://github.com/ttytm/webview
-          ~/.vmodules/webview/src/bindings/build.vsh
+          ~/.vmodules/webview/src/build.vsh
       - name: Cache
         uses: actions/cache/save@v3
         with:
