@@ -5,7 +5,7 @@ Nevertheless, it is a real and capable application. So if you just want to use i
 
 ## Application - Usage
 
-It is developed with focus on systems running GNU Linux but can also be used on macOS.
+It is developed with focus on systems running GNU Linux, but can also be used other platforms.
 
 <div align="center">
   <img width="412" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/bce465bb-9d72-4c96-af94-e3a758657bc3">
@@ -15,7 +15,7 @@ It is developed with focus on systems running GNU Linux but can also be used on 
 ### Usage
 
 - Linux: Download an Appimage from the [releases](https://github.com/ttytm/emoji-mart-desktop/releases) page.
-- macOS: There is no bundling atm. So it is required to self compile it and keep the binary and ui files side by side.</sub>
+- macOS/Windows: There is no bundling atm. So it is required to self compile it and keep the binary and ui files side by side.
 
 ## Webview Example - Building and Development
 
@@ -29,13 +29,23 @@ The following steps show how to build and run the application.
 
 ### Building
 
-If you just want to build the application for usage you can now run `./build.vsh`. \
-The `dist/` directory will contain the build output. Run `./build.vsh --appimage` to build the AppImage on Linux.
+If you just want to build the application for usage you can now run `./build.vsh`.
+
+- The `dist/` directory will contain the build output.
+- On macOS and Windows it's currently required that the contents of `dist/` (`emoji-mart` / `emoji-mart.exe` and `ui/`) are kept next to each other.
+- On Linux you can run `./build.vsh --appimage` to build the AppImage.
 
 ### Building and Running the App in a Development Context
 
 Since we use web technologies for the UI, a good part of the work on it can likely be done via the browser, just like working on a regular web application.
 However, there comes a point where we want to connect our V program and the UI. Below you will find two examples.
+
+> **Note**
+> When running and building on Windows, it is recommended to use `gcc` for compilation. E.g.:
+>
+> ```sh
+> v -cc gcc run .
+> ```
 
 #### Example 1 - run a vite dev server and connect to it
 

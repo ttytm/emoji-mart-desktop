@@ -2,6 +2,7 @@
 
 import cli
 import os
+import arrays
 
 [params]
 struct BuildParams {
@@ -15,11 +16,18 @@ enum BuildMode {
 }
 
 fn which(cmd string) ?string {
-	path := execute('which ${cmd}').output.trim_space()
-	if path == '' {
-		return none
+	return $if windows {
+		paths := execute('where ${cmd}').output.trim_space().split_into_lines()
+		arrays.find_first(paths, fn (p string) bool {
+			return p.contains('npm.cmd')
+		}) or { return none }
+	} $else {
+		path := execute('which ${cmd}').output.trim_space()
+		if path == '' {
+			return none
+		}
+		path
 	}
-	return path
 }
 
 fn exec(proc_path string, work_folder string, args []string) {
@@ -51,9 +59,9 @@ fn build_ui() ! {
 }
 
 fn build_bin(flags string) {
-	build_cmd := 'v -cc clang ${flags} -o ${@VMODROOT}/dist/emoji-mart ${@VMODROOT}/'
+	build_cmd := 'v -cc gcc ${flags} -o ${@VMODROOT}/dist/emoji-mart ${@VMODROOT}/'
 	println('Building binary: ${build_cmd}')
-	res := execute(build_cmd)
+	res := execute($if windows { 'powershell -command ${build_cmd}' } $else { build_cmd })
 	if res.exit_code != 0 {
 		eprintln(res.output)
 		exit(1)
