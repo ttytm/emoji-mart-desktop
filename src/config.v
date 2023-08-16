@@ -11,12 +11,6 @@ const (
 	cfg_file = cfg_dir + '/emoji-mart.toml'
 )
 
-pub fn (cfg Config) to_toml() string {
-	mut mp := map[string]toml.Any{}
-	mp['audio'] = toml.Any(cfg.audio)
-	return mp.to_toml()
-}
-
 fn (mut app App) load_config() ! {
 	if !os.is_dir(cfg_dir) {
 		os.mkdir_all(cfg_dir)!
