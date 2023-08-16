@@ -6,11 +6,6 @@ mut:
 	audio bool
 }
 
-const (
-	cfg_dir  = os.config_dir() or { panic(err) } + '/emoji-mart'
-	cfg_file = cfg_dir + '/emoji-mart.toml'
-)
-
 fn (mut app App) load_config() ! {
 	if !os.is_dir(cfg_dir) {
 		os.mkdir_all(cfg_dir)!
