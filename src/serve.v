@@ -21,7 +21,7 @@ fn get_idle_port() int {
 // The UI of this example builts into a static site. We serve it using vweb.
 // However, we could rely on a npm dependency and use an os.Process to run
 // e.g., `npm run preview` or use `serve` and connect to its localhost address.
-// Check out the `use-serve` branch too see an example.
+// Check out the `use-serve` branch to see an example.
 fn (mut app App) serve() {
 	app.port = get_idle_port()
 	// Serve UI with vweb on localhost.
