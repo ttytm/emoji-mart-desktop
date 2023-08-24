@@ -21,11 +21,42 @@ It is developed with focus on systems running GNU Linux, but can also be used ot
 
 The following steps show how to build and run the application.
 
-### Prerequisites
+### Preparation
 
-- npm: [npm/cli](https://github.com/npm/cli)
+**Prerequisites**
 
-- V Webview Binding; [ttytm/webview](https://github.com/ttytm/webview)
+- V - [Installing V from source](https://github.com/vlang/v#installing-v-from-source)
+
+- npm - [npm/cli](https://github.com/npm/cli)
+
+Either pull and install the required V modules step by step, or use V's package manager to install the project into your `.vmodules` dir and take care of the other modules.
+
+- Manual - (you can skip already performed steps)
+  Clone the repository
+  ```sh
+  git clone https://github.com/ttytm/emoji-mart-desktop.git
+  ```
+  Install V webview Binding
+  ```sh
+  v install --git https://github.com/ttytm/webview
+  # Linux/macOS
+  ~/.vmodules/webview/build.vsh
+  # Windows
+  v run $HOME/.vmodules/webview/build.vsh
+  ```
+  Miniaudio - another V module that this app is using
+  ```sh
+  v install --git https://github.com/Larpon/miniaudio
+  ```
+- Or let `vmp` to install the project into `.vmodules`
+  ```sh
+  v install --git https://github.com/ttytm/emoji-mart-desktop
+  # Don't forget to prepare the webview library if you haven't used it already.
+  # Linux/macOS
+  ~/.vmodules/webview/build.vsh
+  # Windows
+  v run $HOME/.vmodules/webview/build.vsh
+  ```
 
 ### Building
 
