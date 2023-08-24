@@ -18,6 +18,11 @@ const (
 	} $else {
 		'ui/build'
 	}
+	sound_file_path = $if appimage ? {
+		os.getenv('APPDIR') + '/usr/share/assets/pop.wav'
+	} $else {
+		'assets/pop.wav'
+	}
 	cfg_dir  = os.config_dir() or { panic(err) } + '/emoji-mart'
 	cfg_file = cfg_dir + '/emoji-mart.toml'
 )
