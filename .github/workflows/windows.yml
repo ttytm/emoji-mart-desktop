@@ -20,9 +20,10 @@ jobs:
         uses: vlang/setup-v@v1.3
         with:
           check-latest: true
-      - name: Setup webview
+      - name: Setup Modules
         run: |
           v install --git https://github.com/ttytm/webview
+          v install --git https://github.com/Larpon/miniaudio
           ~/.vmodules/webview/build.vsh
       - name: Cache
         uses: actions/cache/save@v3
