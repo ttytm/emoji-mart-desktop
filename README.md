@@ -31,7 +31,7 @@ The following steps show how to build and run the application.
 
 Either pull and install the required V modules step by step, or use V's package manager to install the project into your `.vmodules` dir and take care of the other modules.
 
-- Manual - (you can skip already performed steps)
+- Manual - (you can skip already performed steps)\
   Clone the repository
   ```sh
   git clone https://github.com/ttytm/emoji-mart-desktop.git
@@ -48,7 +48,7 @@ Either pull and install the required V modules step by step, or use V's package 
   ```sh
   v install --git https://github.com/Larpon/miniaudio
   ```
-- Or let `vmp` to install the project into `.vmodules`
+- Or use `vmp` to combine the steps above. The project will be installed into your `.vmodules` dir
   ```sh
   v install --git https://github.com/ttytm/emoji-mart-desktop
   # Don't forget to prepare the webview library if you haven't used it already.
