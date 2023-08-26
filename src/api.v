@@ -1,5 +1,5 @@
+import webview { EventId, JSArgs }
 import os
-import json
 
 fn (mut app App) bind() {
 	app.window.bind('get_config', get_config, &app)
@@ -10,27 +10,26 @@ fn (mut app App) bind() {
 
 // The functions we bind do not have to be public. For semantic reasons we can do it anyway.
 
-pub fn get_config(event_id &char, _ &char, app &App) {
-	app.window.result(event_id, .value, json.encode(app.config))
+pub fn get_config(event_id EventId, _ JSArgs, app &App) {
+	app.window.@return(event_id, .value, app.config)
 }
 
-pub fn play_audio(_ &char, _ &char, app &App) {
+pub fn play_audio(_ EventId, _ JSArgs, app &App) {
 	if app.config.audio {
 		spawn play_wav_file()
 	}
 }
 
-pub fn toggle_audio(event_id &char, args &char, mut app App) {
+pub fn toggle_audio(event_id EventId, args JSArgs, mut app App) {
 	app.config.audio = !app.config.audio
 	if app.config.audio {
 		play_audio(event_id, args, app)
 	}
-	app.window.result(event_id, .value, json.encode(app.config.audio))
+	app.window.@return(event_id, .value, app.config.audio)
 }
 
-pub fn open_in_browser(_ &char, args &char, app &App) {
-	link := json.decode([]string, unsafe { args.vstring() }) or { return }[0]
-	os.open_uri(link) or {
+pub fn open_in_browser(_ EventId, args JSArgs, app &App) {
+	os.open_uri(args.string(0)) or {
 		eprintln(err)
 		return
 	}
