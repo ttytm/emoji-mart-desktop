@@ -33,6 +33,7 @@ fn main() {
 			debug: $if prod { false } $else { true }
 		)
 	}
+	app.load_config() or { panic('Failed loading config. ${err}') }
 	$if dev ? {
 		// `v -d dev run .` aims to connect to an already running `vite dev` server.
 		// (Run `npm run dev` in the `ui/` dir in another terminal.)
@@ -49,7 +50,6 @@ fn main() {
 }
 
 fn (mut app App) run() {
-	app.load_config() or { panic('Failed loading config. ${err}') }
 	app.bind()
 	app.window.set_title('Emoji Mart')
 	app.window.set_size(352, 435, .@none)
