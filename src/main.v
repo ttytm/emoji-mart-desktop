@@ -5,8 +5,16 @@ import os
 struct App {
 	window &Webview
 mut:
-	config Config
-	port   int
+	config   Config
+	port     int
+	dev_proc DevProc
+}
+
+// Processes we create to dynamically run the node environment in a development context
+struct DevProc {
+mut:
+	main      os.Process
+	node_pids []string
 }
 
 const (
@@ -14,9 +22,9 @@ const (
 	// other constants among files, therefore we'll keep them here for now.
 	// E.g. `v -cc gcc -d appimage .` would error, when moving the cfg consts to `config.v`.
 	ui_path = $if appimage ? {
-		os.getenv('APPDIR') + '/usr/share/ui/build'
+		os.getenv('APPDIR') + '/usr/share/ui'
 	} $else {
-		'ui/build'
+		'ui'
 	}
 	sound_file_path = $if appimage ? {
 		os.getenv('APPDIR') + '/usr/share/assets/pop.wav'
@@ -35,13 +43,7 @@ fn main() {
 	}
 	app.load_config() or { panic('Failed loading config. ${err}') }
 	$if dev ? {
-		// `v -d dev run .` aims to connect to an already running `vite dev` server.
-		// (Run `npm run dev` in the `ui/` dir in another terminal.)
-		//
-		// For an automated approach in a node environment, we could create a function, e.g. `serve_dev`,
-		// that runs an `os.Process` with `npm run dev` and dynamically determine the port.
-		// Check out the `use-serve` branch to see a smiliar approach while using `serve` instead of `vweb`.
-		app.port = 5173
+		app.serve_dev()
 	} $else {
 		app.serve()
 	}
@@ -57,9 +59,11 @@ fn (mut app App) run() {
 	app.window.run()
 	app.window.destroy()
 	app.save_config()
+	app.kill_dev_proc()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
 	app.save_config()
+	app.kill_dev_proc()
 	exit(0)
 }
