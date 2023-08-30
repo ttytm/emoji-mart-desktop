@@ -22,12 +22,14 @@
 	}
 
 	onMount(async () => {
+		$config = await get_config();
 		pickerElem.appendChild(
 			new Picker({
 				data,
 				autoFocus: true,
 				dynamicWidth: true,
-				onEmojiSelect: handleSelect
+				onEmojiSelect: handleSelect,
+				maxFrequentRows: !$config.frequent ? 0 : 4
 			})
 		);
 		shadowRoot = document.querySelector('em-emoji-picker')?.shadowRoot;
@@ -36,7 +38,6 @@
 			return;
 		}
 		customizePicker(shadowRoot);
-		$config = await get_config();
 	});
 </script>
 

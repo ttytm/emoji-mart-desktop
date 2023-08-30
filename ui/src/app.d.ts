@@ -13,6 +13,7 @@ declare module 'svelte-popover';
 
 type Config = {
 	audio: boolean;
+	frequent: boolean;
 };
 
 // Webview functions
