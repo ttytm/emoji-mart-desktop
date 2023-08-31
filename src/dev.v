@@ -4,12 +4,12 @@ import os
 // and connects to the localhost port on which the application is being served on.
 [if dev ?]
 fn (mut app App) serve_dev() {
-	npm_path := os.execute('which npm').output.trim_space()
-	if npm_path == '' {
+	which_npm := os.execute('which npm')
+	if which_npm.exit_code != 0 {
 		eprintln('Failed finding `npm`. Make sure `npm` is executable.')
 		exit(0)
 	}
-	mut p := os.new_process(npm_path)
+	mut p := os.new_process(which_npm.output.trim_space())
 	p.set_args(['run', 'dev'])
 	p.set_work_folder(ui_path)
 	p.set_redirect_stdio()
