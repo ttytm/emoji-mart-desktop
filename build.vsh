@@ -2,7 +2,6 @@
 
 import cli
 import os
-import arrays
 
 [params]
 struct BuildParams {
@@ -17,16 +16,22 @@ enum BuildMode {
 
 fn which(cmd string) ?string {
 	return $if windows {
-		paths := execute('where ${cmd}').output.trim_space().split_into_lines()
-		arrays.find_first(paths, fn (p string) bool {
-			return p.contains('npm.cmd')
-		}) or { return none }
-	} $else {
-		path := execute('which ${cmd}').output.trim_space()
-		if path == '' {
+		paths := execute('where ${cmd}')
+		if paths.exit_code != 0 {
 			return none
 		}
-		path
+		for p in paths.output.trim_space().split_into_lines() {
+			if p.contains('${cmd}.cmd') {
+				return p
+			}
+		}
+		return none
+	} $else {
+		path := execute('which ${cmd}')
+		if path.exit_code != 0 {
+			return none
+		}
+		path.output.trim_space()
 	}
 }
 
@@ -41,8 +46,7 @@ fn build_ui() ! {
 	npm_path := if path := which('npm') {
 		path
 	} else {
-		eprintln('Failed finding node package manager.\nMake sure npm is executable.')
-		exit(0)
+		return error('Failed finding node package manager.\nMake sure npm is executable.')
 	}
 
 	// Install node modules
