@@ -15,7 +15,7 @@ enum BuildMode {
 }
 
 fn which(cmd string) ?string {
-	return $if windows {
+	$if windows {
 		paths := execute('where ${cmd}')
 		if paths.exit_code != 0 {
 			return none
@@ -31,7 +31,7 @@ fn which(cmd string) ?string {
 		if path.exit_code != 0 {
 			return none
 		}
-		path.output.trim_space()
+		return path.output.trim_space()
 	}
 }
 
