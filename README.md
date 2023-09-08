@@ -52,7 +52,7 @@ frequent = true # display frequently used emojis
 
 Either pull and install the required V modules step by step, or use V's package manager to install the project into your `.vmodules` dir and take care of the other modules.
 
-- Step by Step
+- Step by Step\
   Clone the repository
   ```sh
   git clone https://github.com/ttytm/emoji-mart-desktop.git
@@ -112,10 +112,6 @@ Just like in the browser most changes on the UI will be immediately reflected in
 
   v -d dev run .
   ```
-
-  Visual example (Might be outdated):
-
-  https://github.com/ttytm/emoji-mart-desktop/assets/34311583/86ad765c-ab6a-4970-b2ac-a8a00c399989
 
 #### Example 2 - serve the prebuilt site
 
