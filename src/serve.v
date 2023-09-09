@@ -19,7 +19,7 @@ fn get_idle_port(port int) int {
 // The UI of this example builts into a static site.
 // We use vweb to serve to UI on localhost.
 fn (mut app App) serve() {
-	app.port = get_idle_port(app.config.port)
+	app.port = get_idle_port(34763)
 	spawn fn (port int) {
 		mut web_ctx := Context{}
 		web_ctx.mount_static_folder_at('${ui_path}/build', '/')

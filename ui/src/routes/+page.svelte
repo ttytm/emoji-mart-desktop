@@ -18,10 +18,11 @@
 			);
 		}
 		navigator.clipboard.writeText(emojiData.native);
-		if ($config.audio) window.play_audio();
+		window.handle_select(localStorage.getItem('emoji-mart.frequently')!);
 	}
 
 	onMount(async () => {
+		localStorage.setItem('emoji-mart.frequently', await window.get_cache());
 		$config = await get_config();
 		pickerElem.appendChild(
 			new Picker({
