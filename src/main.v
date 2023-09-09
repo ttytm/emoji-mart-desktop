@@ -37,8 +37,8 @@ fn main() {
 			debug: $if prod { false } $else { true }
 		)
 	}
-	app.config.load() or { panic('Failed loading config. ${err}') }
-	app.cache.load() or { panic('Failed loading cache. ${err}') }
+	app.config.load()
+	app.cache.load()
 	$if dev ? {
 		app.serve_dev()
 	} $else {
@@ -55,14 +55,16 @@ fn (mut app App) run() {
 	app.window.navigate('http://localhost:${app.port}')
 	app.window.run()
 	app.window.destroy()
-	app.config.save()
-	app.cache.save()
+	app.end()
+}
+
+fn (mut app App) end() {
+	app.config.save() or { panic('Failed saving config. ${err}') }
+	app.cache.save() or { panic('Failed loading cache. ${err}') }
 	app.kill_proc()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
-	app.config.save()
-	app.cache.save()
-	app.kill_proc()
+	app.end()
 	exit(0)
 }

@@ -7,20 +7,18 @@ mut:
 	frequent bool = true // Controls whether or not frequently used emojis are shown
 }
 
-fn (mut config Config) load() ! {
-	if !os.is_dir(cfg_dir) {
-		os.mkdir_all(cfg_dir)!
-	}
-	if !os.is_file(cfg_file) {
-		os.write_file(cfg_file, toml.encode(Config{}))!
-	}
-	user_config := toml.parse_file(cfg_file)!
-	config = Config{
-		audio: user_config.value('audio').bool()
-		frequent: user_config.value('frequent').bool()
+fn (mut config Config) load() {
+	if f := toml.parse_file(cfg_file) {
+		config = Config{
+			audio: f.value('audio').bool()
+			frequent: f.value('frequent').bool()
+		}
 	}
 }
 
-fn (config Config) save() {
-	os.write_file(cfg_file, toml.encode(config)) or { panic('Failed saving config. ${err}') }
+fn (config Config) save() ! {
+	if !os.is_dir(cfg_dir) {
+		os.mkdir_all(cfg_dir)!
+	}
+	os.write_file(cfg_file, toml.encode(config))!
 }
