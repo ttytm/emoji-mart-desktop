@@ -18,6 +18,7 @@ fn (mut app App) serve_dev() {
 		for p in paths.output.trim_space().split_into_lines() {
 			if p.contains('npm.cmd') {
 				npm_path = p
+				break
 			}
 		}
 	} $else {
