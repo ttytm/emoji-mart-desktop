@@ -5,7 +5,6 @@ struct Config {
 mut:
 	audio    bool = true // Last state of audio feedback feedback setting for emoji selections
 	frequent bool = true // Controls whether or not frequently used emojis are shown
-	port     int  = 34763 // Default port the app is tried to be served on.
 }
 
 fn (mut config Config) load() ! {
@@ -19,7 +18,6 @@ fn (mut config Config) load() ! {
 	config = Config{
 		audio: user_config.value('audio').bool()
 		frequent: user_config.value('frequent').bool()
-		port: user_config.value('port').int()
 	}
 }
 

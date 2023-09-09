@@ -6,6 +6,7 @@ struct App {
 	window &Webview
 mut:
 	config   Config
+	cache    LocalStorage
 	port     int
 	dev_proc DevProc
 }
@@ -31,8 +32,10 @@ const (
 	} $else {
 		'assets/pop.wav'
 	}
-	cfg_dir  = os.join_path(os.config_dir() or { panic(err) }, 'emoji-mart')
-	cfg_file = os.join_path(cfg_dir, 'emoji-mart.toml')
+	cfg_dir    = os.join_path(os.config_dir() or { panic(err) }, 'emoji-mart')
+	cfg_file   = os.join_path(cfg_dir, 'emoji-mart.toml')
+	cache_dir  = os.join_path(os.cache_dir(), 'emoji-mart', 'LocalStorage')
+	cache_file = os.join_path(cache_dir, 'localStorage.json')
 )
 
 fn main() {
@@ -42,6 +45,7 @@ fn main() {
 		)
 	}
 	app.config.load() or { panic('Failed loading config. ${err}') }
+	app.cache.load() or { panic('Failed loading cache. ${err}') }
 	$if dev ? {
 		app.serve_dev()
 	} $else {
@@ -59,11 +63,13 @@ fn (mut app App) run() {
 	app.window.run()
 	app.window.destroy()
 	app.config.save()
+	app.cache.save()
 	app.kill_dev_proc()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
 	app.config.save()
+	app.cache.save()
 	app.kill_dev_proc()
 	exit(0)
 }

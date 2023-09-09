@@ -2,10 +2,14 @@ import webview { Event }
 import os
 
 fn (mut app App) bind() {
-	app.window.bind('get_config', app.get_config) // Bind a function method to have the app struct available.
-	app.window.bind('play_audio', app.play_audio)
-	app.window.bind_ctx('toggle_audio', toggle_audio, app) // Alternatively, use the ctx ptr to pass a struct.
+	// Bind a function.
 	app.window.bind('open_in_browser', open_in_browser)
+	// Bind a function method to make the app struct available.
+	app.window.bind('get_config', app.get_config)
+	app.window.bind('get_cache', app.get_cache)
+	app.window.bind('handle_select', app.handle_select)
+	// Alternatively, use `bind_ctx` and use the context pointer to pass a struct.
+	app.window.bind_ctx('toggle_audio', toggle_audio, app)
 }
 
 // The functions we bind do not have to be public. For semantic reasons or
@@ -15,10 +19,11 @@ pub fn (app &App) get_config(e &Event) {
 	e.@return(app.config)
 }
 
-pub fn (app &App) play_audio(_ &Event) {
+pub fn (mut app App) handle_select(e &Event) {
 	if app.config.audio {
 		spawn play_wav_file()
 	}
+	app.cache.frequently = e.string(0)
 }
 
 pub fn toggle_audio(e &Event, mut app App) {
@@ -27,6 +32,10 @@ pub fn toggle_audio(e &Event, mut app App) {
 		spawn play_wav_file()
 	}
 	e.@return(app.config.audio)
+}
+
+pub fn (app &App) get_cache(e &Event) {
+	e.@return(app.cache.frequently)
 }
 
 pub fn open_in_browser(e &Event) {
