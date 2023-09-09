@@ -8,7 +8,7 @@ mut:
 	port     int  = 34763 // Default port the app is tried to be served on.
 }
 
-fn (mut app App) load_config() ! {
+fn (mut config Config) load() ! {
 	if !os.is_dir(cfg_dir) {
 		os.mkdir_all(cfg_dir)!
 	}
@@ -16,13 +16,13 @@ fn (mut app App) load_config() ! {
 		os.write_file(cfg_file, toml.encode(Config{}))!
 	}
 	user_config := toml.parse_file(cfg_file)!
-	app.config = Config{
+	config = Config{
 		audio: user_config.value('audio').bool()
 		frequent: user_config.value('frequent').bool()
 		port: user_config.value('port').int()
 	}
 }
 
-fn (mut app App) save_config() {
-	os.write_file(cfg_file, toml.encode(app.config)) or { panic('Failed saving config. ${err}') }
+fn (config Config) save() {
+	os.write_file(cfg_file, toml.encode(config)) or { panic('Failed saving config. ${err}') }
 }

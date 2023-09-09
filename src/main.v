@@ -31,8 +31,8 @@ const (
 	} $else {
 		'assets/pop.wav'
 	}
-	cfg_dir  = os.config_dir() or { panic(err) } + '/emoji-mart'
-	cfg_file = cfg_dir + '/emoji-mart.toml'
+	cfg_dir  = os.join_path(os.config_dir() or { panic(err) }, 'emoji-mart')
+	cfg_file = os.join_path(cfg_dir, 'emoji-mart.toml')
 )
 
 fn main() {
@@ -41,7 +41,7 @@ fn main() {
 			debug: $if prod { false } $else { true }
 		)
 	}
-	app.load_config() or { panic('Failed loading config. ${err}') }
+	app.config.load() or { panic('Failed loading config. ${err}') }
 	$if dev ? {
 		app.serve_dev()
 	} $else {
@@ -58,12 +58,12 @@ fn (mut app App) run() {
 	app.window.navigate('http://localhost:${app.port}')
 	app.window.run()
 	app.window.destroy()
-	app.save_config()
+	app.config.save()
 	app.kill_dev_proc()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
-	app.save_config()
+	app.config.save()
 	app.kill_dev_proc()
 	exit(0)
 }
