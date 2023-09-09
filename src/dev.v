@@ -43,15 +43,15 @@ fn (mut app App) serve_dev() {
 			break
 		}
 	}
-	app.dev_proc.main = p
+	app.proc = p
 	if app.port == 0 {
 		eprintln('Failed serving to localhost.')
-		app.kill_dev_proc()
+		app.kill_proc()
 		exit(0)
 	}
 }
 
 [if dev ?]
-fn (mut app App) kill_dev_proc() {
-	app.dev_proc.main.signal_pgkill()
+fn (mut app App) kill_proc() {
+	app.proc.signal_pgkill()
 }

@@ -5,17 +5,10 @@ import os
 struct App {
 	window &Webview
 mut:
-	config   Config
-	cache    LocalStorage
-	port     int
-	dev_proc DevProc
-}
-
-// Processes we create to dynamically run the node environment in a development context
-struct DevProc {
-mut:
-	main      os.Process
-	node_pids []string
+	config Config
+	cache  LocalStorage
+	port   int
+	proc   os.Process // OS process spawned when running the app with `v -d dev`
 }
 
 const (
@@ -64,12 +57,12 @@ fn (mut app App) run() {
 	app.window.destroy()
 	app.config.save()
 	app.cache.save()
-	app.kill_dev_proc()
+	app.kill_proc()
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
 	app.config.save()
 	app.cache.save()
-	app.kill_dev_proc()
+	app.kill_proc()
 	exit(0)
 }
