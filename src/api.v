@@ -24,7 +24,7 @@ pub fn (app &App) play_audio(_ &Event) {
 pub fn toggle_audio(e &Event, mut app App) {
 	app.config.audio = !app.config.audio
 	if app.config.audio {
-		app.play_audio(e)
+		spawn play_wav_file()
 	}
 	e.@return(app.config.audio)
 }
