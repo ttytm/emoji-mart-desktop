@@ -33,7 +33,6 @@
 
 	async function toggleAudio() {
 		$config.audio = await window.toggle_audio();
-		if ($config.audio) window.play_audio();
 	}
 
 	$: if (menuOpen) document.addEventListener('keydown', handleEscape);
