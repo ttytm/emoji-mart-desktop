@@ -9,10 +9,7 @@ mut:
 
 fn (mut config Config) load() {
 	if f := toml.parse_file(cfg_file) {
-		config = Config{
-			audio: f.value('audio').bool()
-			frequent: f.value('frequent').bool()
-		}
+		config = f.decode[Config]() or { return }
 	}
 }
 
