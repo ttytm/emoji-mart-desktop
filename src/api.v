@@ -15,32 +15,34 @@ fn (mut app App) bind() {
 // The functions we bind do not have to be public. For semantic reasons or
 // if we would want to generate docs for pub functions we can do it anyway.
 
-pub fn (app &App) get_config(e &Event) {
-	e.@return(app.config)
+pub fn (app &App) get_config(_ &Event) Config {
+	return app.config
 }
 
-pub fn (mut app App) handle_select(e &Event) {
+pub fn (mut app App) handle_select(e &Event) voidptr {
 	if app.config.audio {
 		spawn play_wav_file()
 	}
 	app.cache.frequently = e.string(0)
+	return webview.no_result
 }
 
-pub fn toggle_audio(e &Event, mut app App) {
+pub fn toggle_audio(e &Event, mut app App) bool {
 	app.config.audio = !app.config.audio
 	if app.config.audio {
 		spawn play_wav_file()
 	}
-	e.@return(app.config.audio)
+	return app.config.audio
 }
 
-pub fn (app &App) get_cache(e &Event) {
-	e.@return(app.cache.frequently)
+pub fn (app &App) get_cache(e &Event) string {
+	return app.cache.frequently
 }
 
-pub fn open_in_browser(e &Event) {
+pub fn open_in_browser(e &Event) voidptr {
 	os.open_uri(e.string(0)) or {
 		eprintln(err)
-		return
+		return webview.no_result
 	}
+	return webview.no_result
 }
