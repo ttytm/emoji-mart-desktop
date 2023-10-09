@@ -92,13 +92,6 @@ If you just want to build the application for usage you can now run `./build.vsh
 Since we use web technologies for the UI, a good part of the frontend-work can likely be done via the browser, just like working on a regular web application.
 However, there comes a point where we want to connect our V program and the UI.
 
-> **Note**
-> When running and building on Windows, it is recommended to use `gcc` for compilation. E.g.:
->
-> ```sh
-> v -cc gcc run .
-> ```
-
 #### Example 1 - run a vite dev server and connect to it
 
 When connecting to a vite dev server features like hot reloading are preserved.
@@ -111,6 +104,9 @@ Just like in the browser most changes on the UI will be immediately reflected in
   # npm i --prefix ui/
 
   v -d dev run .
+
+  # On Windows, it is recommended to use `gcc` for compilation.
+  v -cc gcc -d dev run .
   ```
 
 #### Example 2 - serve the prebuilt site
@@ -130,6 +126,9 @@ This is the regular build approach and what our final app is doing.
 
   ```sh
   v run .
+
+  # Windows
+  v -cc gcc run .
   ```
 
 <br>
