@@ -75,7 +75,7 @@ fn build_bin(flags string) {
 fn build(cmd cli.Command) ! {
 	build_ui()!
 	mut flags := if cmd.name == 'dev' { '' } else { '-prod' }
-	if cmd.flags[0].get_bool()! {
+	if cmd.flags.get_bool('appimage')! {
 		flags += ' -d appimage'
 		defer {
 			build_appimage() or {
