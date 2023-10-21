@@ -14,25 +14,20 @@ enum BuildMode {
 	dev
 }
 
-fn exec(proc_path string, work_folder string, args []string) {
-	mut p := new_process(proc_path)
+fn exec(command string, work_folder string, args []string) ! {
+	mut p := new_process(find_abs_path_of_executable(command) or {
+		return error('Failed finding ${command}.\nMake sure ${command} is executable.')
+	})
 	p.set_work_folder(work_folder)
 	p.set_args(args)
 	p.wait()
 }
 
 fn build_ui() ! {
-	npm_path := if path := find_abs_path_of_executable('npm') {
-		path
-	} else {
-		return error('Failed finding node package manager.\nMake sure npm is executable.')
-	}
-
 	// Install node modules
-	exec(npm_path, '${@VMODROOT}/ui', ['install'])
+	exec('npm', '${@VMODROOT}/ui', ['install'])!
 	// Build static web app
-	exec(npm_path, '${@VMODROOT}/ui', ['run', 'build'])
-
+	exec('npm', '${@VMODROOT}/ui', ['run', 'build'])!
 	// Remove `dist/` if it exits - ignore errors if it doesn't
 	rmdir_all('dist') or {}
 	// Create `dist/` - fail is next to impossible as `dist/` does not exist at this point
@@ -76,9 +71,8 @@ fn build_appimage() ! {
 	cp('assets/AppImageBuilder.yml', 'dist/appimage/AppImageBuilder.yml')!
 	cp('assets/emoji-mart.png', 'dist/appimage/AppDir/usr/share/icons/emoji-mart.png')!
 	cp('assets/pop.wav', 'dist/appimage/AppDir/usr/share/assets/pop.wav')!
-	exec(find_abs_path_of_executable('appimage-builder') or {
-		panic('Failed finding appimage-builder.')
-	}, '${@VMODROOT}/dist/appimage', ['--recipe', 'AppImageBuilder.yml', '--skip-tests'])
+	exec('appimage-builder', '${@VMODROOT}/dist/appimage', ['--recipe', 'AppImageBuilder.yml',
+		'--skip-tests'])!
 }
 
 mut cmd := cli.Command{
