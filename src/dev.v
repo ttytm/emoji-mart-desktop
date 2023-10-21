@@ -5,31 +5,9 @@ import term
 // and connects to the localhost port on which the application is being served on.
 [if dev ?]
 fn (mut app App) serve_dev() {
-	npm_path_error := fn () {
+	mut npm_path := os.find_abs_path_of_executable('npm') or {
 		eprintln('Failed finding node package manager.\nMake sure npm is executable.')
 		exit(0)
-	}
-	mut npm_path := ''
-	$if windows {
-		paths := os.execute('where npm')
-		if paths.exit_code != 0 {
-			npm_path_error()
-		}
-		for p in paths.output.trim_space().split_into_lines() {
-			if p.contains('npm.cmd') {
-				npm_path = p
-				break
-			}
-		}
-	} $else {
-		path := os.execute('which npm')
-		if path.exit_code != 0 {
-			npm_path_error()
-		}
-		npm_path = path.output.trim_space()
-	}
-	if npm_path == '' {
-		npm_path_error()
 	}
 	mut p := os.new_process(npm_path)
 	p.use_pgroup = true

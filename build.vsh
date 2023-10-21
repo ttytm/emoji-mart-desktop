@@ -14,27 +14,6 @@ enum BuildMode {
 	dev
 }
 
-fn which(cmd string) ?string {
-	$if windows {
-		paths := execute('where ${cmd}')
-		if paths.exit_code != 0 {
-			return none
-		}
-		for p in paths.output.trim_space().split_into_lines() {
-			if p.contains('${cmd}.cmd') {
-				return p
-			}
-		}
-		return none
-	} $else {
-		path := execute('which ${cmd}')
-		if path.exit_code != 0 {
-			return none
-		}
-		return path.output.trim_space()
-	}
-}
-
 fn exec(proc_path string, work_folder string, args []string) {
 	mut p := new_process(proc_path)
 	p.set_work_folder(work_folder)
@@ -43,7 +22,7 @@ fn exec(proc_path string, work_folder string, args []string) {
 }
 
 fn build_ui() ! {
-	npm_path := if path := which('npm') {
+	npm_path := if path := find_abs_path_of_executable('npm') {
 		path
 	} else {
 		return error('Failed finding node package manager.\nMake sure npm is executable.')
@@ -97,8 +76,9 @@ fn build_appimage() ! {
 	cp('assets/AppImageBuilder.yml', 'dist/appimage/AppImageBuilder.yml')!
 	cp('assets/emoji-mart.png', 'dist/appimage/AppDir/usr/share/icons/emoji-mart.png')!
 	cp('assets/pop.wav', 'dist/appimage/AppDir/usr/share/assets/pop.wav')!
-	exec(which('appimage-builder') or { panic('Failed finding appimage-builder.') }, '${@VMODROOT}/dist/appimage',
-		['--recipe', 'AppImageBuilder.yml', '--skip-tests'])
+	exec(find_abs_path_of_executable('appimage-builder') or {
+		panic('Failed finding appimage-builder.')
+	}, '${@VMODROOT}/dist/appimage', ['--recipe', 'AppImageBuilder.yml', '--skip-tests'])
 }
 
 mut cmd := cli.Command{
