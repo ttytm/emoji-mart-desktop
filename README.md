@@ -44,40 +44,25 @@ frequent = true # display frequently used emojis
 
 ### Preparation
 
-**Prerequisites**
-
 - V - [Installing V from source](https://github.com/vlang/v#installing-v-from-source)
 
 - npm - [npm/cli](https://github.com/npm/cli)
 
-Either pull and install the required V modules step by step, or use V's package manager to install the project into your `.vmodules` dir and take care of the other modules.
+- emoji-mart-desktop
 
-- Step by Step\
-  Clone the repository
-  ```sh
-  git clone https://github.com/ttytm/emoji-mart-desktop.git
-  ```
-  Install webview
-  ```sh
-  v install --git https://github.com/ttytm/webview
-  # Linux/macOS
-  ~/.vmodules/webview/build.vsh
-  # Windows
-  v run $HOME/.vmodules/webview/build.vsh
-  ```
-  Install `miniaudio` - a V module that this app is using
-  ```sh
-  v install --git https://github.com/Larpon/miniaudio
-  ```
-- Or use `vmp` to combine the steps above. The project will be installed into your `.vmodules` dir
-  ```sh
-  v install --git https://github.com/ttytm/emoji-mart-desktop
-  # Don't forget to prepare the webview library if you haven't used it already.
-  # Linux/macOS
-  ~/.vmodules/webview/build.vsh
-  # Windows
-  v run $HOME/.vmodules/webview/build.vsh
-  ```
+```sh
+# Clone the repisitory
+git clone https://github.com/ttytm/emoji-mart-desktop.git
+cd emoji-mart-desktop
+# Install dependencies
+v install --once
+
+# If you haven't used it before, prepare the webview library.
+# Linux/macOS
+~/.vmodules/webview/build.vsh
+# Windows PowerShell
+v $HOME/.vmodules/webview/build.vsh
+```
 
 ### Building
 
@@ -85,7 +70,7 @@ If you just want to build the application for usage you can now run `./build.vsh
 
 - The `dist/` directory will contain the build output.
 - On macOS and Windows it's currently required that the contents of `dist/` (`emoji-mart` / `emoji-mart.exe` and `ui/`) are kept next to each other.
-- On Linux you can run `./build.vsh --appimage` to build the AppImage.
+- On Linux you can run `./build.vsh --appimage` (requires `appimage-builder`) to build the AppImage.
 
 ### Building and Running in a Development Context
 
