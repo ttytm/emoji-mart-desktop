@@ -12,9 +12,9 @@ fn play_wav_file() {
 	defer {
 		ma.engine_uninit(engine)
 	}
-	if ma.engine_play_sound(engine, sound_file_path.str, ma.null) != .success {
-		panic('Failed to load and play "${sound_file_path}".')
+	if ma.engine_play_sound(engine, paths.sound.str, ma.null) != .success {
+		panic('Failed to load and play "${paths.sound}".')
 	}
-	ma.engine_play_sound(engine, sound_file_path.str, ma.null)
+	ma.engine_play_sound(engine, paths.sound.str, ma.null)
 	time.sleep(140 * time.millisecond)
 }

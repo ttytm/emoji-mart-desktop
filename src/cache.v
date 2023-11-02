@@ -7,14 +7,14 @@ mut:
 }
 
 fn (mut cache LocalStorage) load() {
-	if f := os.read_file(cache_file) {
+	if f := os.read_file(paths.cache_file) {
 		cache = json.decode(LocalStorage, f) or { LocalStorage{} }
 	}
 }
 
 fn (cache LocalStorage) save() ! {
-	if !os.is_dir(cache_dir) {
-		os.mkdir_all(cache_dir)!
+	if !os.is_dir(paths.cache_dir) {
+		os.mkdir_all(paths.cache_dir)!
 	}
-	os.write_file(cache_file, json.encode(cache))!
+	os.write_file(paths.cache_file, json.encode(cache))!
 }

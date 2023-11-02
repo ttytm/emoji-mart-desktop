@@ -11,7 +11,7 @@ fn (mut app App) serve() {
 	mut p := os.new_process(npm_path)
 	p.use_pgroup = true
 	p.set_args(['run', 'dev'])
-	p.set_work_folder(ui_path)
+	p.set_work_folder(paths.ui)
 	p.set_redirect_stdio()
 	p.run()
 	for p.is_alive() {

@@ -3,16 +3,7 @@
 import cli
 import os
 
-[params]
-struct BuildParams {
-	mode     BuildMode [required]
-	appimage bool
-}
-
-enum BuildMode {
-	release
-	dev
-}
+const app_root = @VMODROOT
 
 fn exec(command string, work_folder string, args []string) ! {
 	mut p := new_process(find_abs_path_of_executable(command) or {
@@ -25,9 +16,9 @@ fn exec(command string, work_folder string, args []string) ! {
 
 fn build_ui() ! {
 	// Install node modules
-	exec('npm', '${@VMODROOT}/ui', ['install'])!
+	exec('npm', '${'${app_root}/ui'}', ['install'])!
 	// Build static web app
-	exec('npm', '${@VMODROOT}/ui', ['run', 'build'])!
+	exec('npm', '${app_root}/ui', ['run', 'build'])!
 	// Remove `dist/` if it exits - ignore errors if it doesn't
 	rmdir_all('dist') or {}
 	// Create `dist/` - fail is next to impossible as `dist/` does not exist at this point
@@ -36,18 +27,32 @@ fn build_ui() ! {
 	cp_all('ui/build/', 'dist/ui/build', false)!
 }
 
-fn build_bin(flags string) {
-	build_cmd := 'v -cc gcc ${flags} -o ${@VMODROOT}/dist/emoji-mart ${@VMODROOT}/'
-	println('Building binary: ${build_cmd}')
-	res := execute($if windows { 'powershell -command ${build_cmd}' } $else { build_cmd })
-	if res.exit_code != 0 {
-		eprintln(res.output)
-		exit(1)
-	}
+fn gen_embeds() ! {
+	chdir(app_root)!
+	// Use LVbag to generate the embed file lists.
+	system('lvb -bag ui -o src/lvb.v -f dist/ui')
+	// Append a version const.
+	mut f := open_append('src/lvb.v')!
+	// `git describe --tags` -> v0.3.0@g3804a82. Use in App when constants evaluate at comptime.
+	version := "const version = '${execute_opt('git describe --tags')!.output.trim_space()}'"
+	f.write_string(version)!
+	f.close()
+	// Format.
+	system('v fmt -w src/lvb.v')
+}
+
+fn build_bin(flags string) ! {
+	cc := $if macos { 'clang' } $else { 'gcc' }
+	cmd := 'v -cc ${cc} ${flags} -o ${app_root}/dist/emoji-mart ${app_root}/src'
+	println('Building binary: ${cmd}')
+	execute_opt($if windows { 'powershell -command ${cmd}' } $else { cmd })!
 }
 
 fn build(cmd cli.Command) ! {
-	build_ui()!
+	if !cmd.flags.get_bool('skip-ui')! {
+		build_ui()!
+	}
+	gen_embeds()!
 	mut flags := if cmd.name == 'dev' { '' } else { '-prod' }
 	if cmd.flags.get_bool('appimage')! {
 		flags += ' -d appimage'
@@ -58,20 +63,17 @@ fn build(cmd cli.Command) ! {
 			}
 		}
 	}
-	build_bin(flags)
+	build_bin(flags)!
 }
 
 fn build_appimage() ! {
 	println('Building appimage')
 	mkdir_all('dist/appimage/AppDir/usr/bin')!
 	mkdir_all('dist/appimage/AppDir/usr/share/icons')!
-	mkdir('dist/appimage/AppDir/usr/share/assets')!
-	cp_all('dist/ui/', 'dist/appimage/AppDir/usr/share/ui/', false)!
-	cp_all('dist/emoji-mart', 'dist/appimage/AppDir/usr/bin/', false)!
+	cp('dist/emoji-mart', 'dist/appimage/AppDir/usr/bin/emoji-mart')!
 	cp('assets/AppImageBuilder.yml', 'dist/appimage/AppImageBuilder.yml')!
 	cp('assets/emoji-mart.png', 'dist/appimage/AppDir/usr/share/icons/emoji-mart.png')!
-	cp('assets/pop.wav', 'dist/appimage/AppDir/usr/share/assets/pop.wav')!
-	exec('appimage-builder', '${@VMODROOT}/dist/appimage', ['--recipe', 'AppImageBuilder.yml',
+	exec('appimage-builder', '${app_root}/dist/appimage', ['--recipe', 'AppImageBuilder.yml',
 		'--skip-tests'])!
 }
 
@@ -100,6 +102,11 @@ mut cmd := cli.Command{
 			name: 'appimage'
 			description: 'Create an appimage from the built binary.'
 			global: true
+		},
+		cli.Flag{
+			flag: .bool
+			name: 'skip-ui'
+			description: 'Skip building the UI.'
 		},
 	]
 }

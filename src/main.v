@@ -12,30 +12,16 @@ mut:
 }
 
 const (
-	// Currently we'll encounter a bug when splitting a comptime constant and
-	// other constants among files, therefore we'll keep them here for now.
-	// E.g. `v -cc gcc -d appimage .` would error, when moving the cfg consts to `config.v`.
-	ui_path = $if appimage ? {
-		os.getenv('APPDIR') + '/usr/share/ui'
-	} $else {
-		'ui'
-	}
-	sound_file_path = $if appimage ? {
-		os.getenv('APPDIR') + '/usr/share/assets/pop.wav'
-	} $else {
-		'assets/pop.wav'
-	}
-	cfg_dir    = os.join_path(os.config_dir() or { panic(err) }, 'emoji-mart')
-	cfg_file   = os.join_path(cfg_dir, 'emoji-mart.toml')
-	cache_dir  = os.join_path(os.cache_dir(), 'emoji-mart', 'LocalStorage')
-	cache_file = os.join_path(cache_dir, 'localStorage.json')
+	app_name = 'emoji-mart'
+	paths    = &Paths{}
 )
 
 fn main() {
+	$if embed ? {
+		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
+	}
 	mut app := App{
-		window: webview.create(
-			debug: $if prod { false } $else { true }
-		)
+		window: webview.create()
 	}
 	app.config.load()
 	app.cache.load()

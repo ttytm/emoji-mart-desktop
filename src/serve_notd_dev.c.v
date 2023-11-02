@@ -7,7 +7,7 @@ struct Context {
 }
 
 pub fn (mut ctx Context) index() vweb.Result {
-	return ctx.html(os.read_file('${ui_path}/build/index.html') or { panic(err) })
+	return ctx.html(os.read_file('${paths.ui}/build/index.html') or { panic(err) })
 }
 
 fn get_idle_port(port int) int {
@@ -22,7 +22,7 @@ fn (mut app App) serve() {
 	app.port = get_idle_port(34763)
 	spawn fn (port int) {
 		mut web_ctx := Context{}
-		web_ctx.mount_static_folder_at('${ui_path}/build', '/')
+		web_ctx.mount_static_folder_at('${paths.ui}/build', '/')
 		vweb.run(web_ctx, port)
 	}(app.port)
 }
