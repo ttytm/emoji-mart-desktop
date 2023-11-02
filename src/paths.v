@@ -2,12 +2,14 @@ import os { join_path }
 
 struct Paths {
 mut:
-	root      string
-	tmp       string
-	ui_dev    string
-	ui        string
-	sound_dev string
-	sound     string
+	root       string
+	tmp        string
+	ui_dev     string
+	ui         string
+	sound_dev  string
+	sound      string
+	icon_dev   string
+	icon       string
 	cfg_dir    string
 	cfg_file   string
 	cache_dir  string
@@ -27,9 +29,11 @@ fn init() {
 		app_tmp := join_path(os.temp_dir(), '${app_name}-@${version}')
 		p.ui = join_path(app_tmp, 'ui')
 		p.sound = join_path(app_tmp, 'assets', 'pop.wav')
+		p.icon = join_path(app_tmp, 'assets', 'icon.ico')
 	} $else {
 		p.ui = p.ui_dev
 		p.sound = p.sound_dev
+		p.icon = p.icon_dev
 	}
 	// Config
 	p.cfg_dir = join_path(os.config_dir() or { panic(err) }, app_name)

@@ -33,6 +33,7 @@ fn main() {
 fn (mut app App) run() {
 	app.bind()
 	app.window.set_title('Emoji Mart')
+	app.window.set_icon(paths.icon) or {}
 	app.window.set_size(352, 435, .@none)
 	app.window.navigate('http://localhost:${app.port}')
 	app.window.run()
