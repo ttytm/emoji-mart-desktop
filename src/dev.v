@@ -17,7 +17,10 @@ fn (mut app App) serve_dev() {
 	p.run()
 	for p.is_alive() {
 		line := p.stdout_read()
-		if line.contains('localhost:') {
+		if line.contains('127.0.0.1:') {
+			app.port = term.strip_ansi(line.all_after('127.0.0.1:').trim_space()).int()
+			break
+		} else if line.contains('localhost:') {
 			app.port = term.strip_ansi(line.all_after('localhost:').trim_space()).int()
 			break
 		}
