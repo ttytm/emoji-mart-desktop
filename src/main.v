@@ -39,11 +39,7 @@ fn main() {
 	}
 	app.config.load()
 	app.cache.load()
-	$if dev ? {
-		app.serve_dev()
-	} $else {
-		app.serve()
-	}
+	app.serve()
 	os.signal_opt(.int, app.handle_interrupt)!
 	app.run()
 }
@@ -61,7 +57,9 @@ fn (mut app App) run() {
 fn (mut app App) end() {
 	app.config.save() or { panic('Failed saving config. ${err}') }
 	app.cache.save() or { panic('Failed loading cache. ${err}') }
-	app.kill_proc()
+	$if dev ? {
+		app.proc.signal_pgkill()
+	}
 }
 
 fn (mut app App) handle_interrupt(signal os.Signal) {
