@@ -21,7 +21,9 @@ pub fn (app &App) get_config(_ &Event) Config {
 
 pub fn (mut app App) handle_select(e &Event) !voidptr {
 	if app.config.audio {
-		spawn play_wav_file()
+		$if !windows {
+			spawn play_wav_file()
+		}
 	}
 	app.cache.frequently = e.get_arg[string](0)!
 	return webview.no_result
@@ -30,7 +32,9 @@ pub fn (mut app App) handle_select(e &Event) !voidptr {
 pub fn toggle_audio(e &Event, mut app App) bool {
 	app.config.audio = !app.config.audio
 	if app.config.audio {
-		spawn play_wav_file()
+		$if !windows {
+			spawn play_wav_file()
+		}
 	}
 	return app.config.audio
 }
