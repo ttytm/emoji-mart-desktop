@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+TryExec=emoji-mart-desktop
+Exec=emoji-mart-desktop
+Icon=emoji-mart
+Terminal=false
+Categories=Utility;
+
+Name=Emoji Mart
+GenericName=Terminal
+Comment=Emoji picker, cross-platform, lightweight
