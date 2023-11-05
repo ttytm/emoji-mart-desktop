@@ -10,6 +10,9 @@ emoji-picker
 # Ignore binary output folders
 dist/
 
+# Generated files
+lvb.v
+
 # Ignore common editor/system specific metadata
 .DS_Store
 .idea/
