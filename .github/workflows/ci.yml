@@ -5,6 +5,7 @@ on:
     paths-ignore: ['**/*.md']
   pull_request:
     paths-ignore: ['**/*.md']
+  workflow_dispatch:
 
 jobs:
   linux:
@@ -14,6 +15,10 @@ jobs:
 
   macOS:
     uses: ./.github/workflows/macos.yml
+    permissions:
+      contents: write
 
   windows:
     uses: ./.github/workflows/windows.yml
+    permissions:
+      contents: write

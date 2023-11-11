@@ -10,22 +10,19 @@ jobs:
   fmt:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout ${{ env.REPO_NAME }}
+        uses: actions/checkout@v4
+        with:
+          path: ${{ env.REPO_NAME }}
       - name: Restore Cache
         uses: actions/cache/restore@v3
         with:
           path: |
             vlang
             ~/.vmodules
-          key: ${{ runner.os }}-
+          key: ${{ runner.os }}-${{ github.sha }}
           fail-on-cache-miss: true
-
       - name: Setup V
-        uses: vlang/setup-v@v1.3
-
-      - name: Checkout ${{ env.REPO_NAME }}
-        uses: actions/checkout@v3
-        with:
-          path: ${{ env.REPO_NAME }}
-
+        run: vlang/v symlink && v version
       - name: Check Formatting
-        run: v fmt -verify ${{ env.REPO_NAME }}
+        run: v fmt ${{ env.REPO_NAME }} && v fmt -verify ${{ env.REPO_NAME }}
