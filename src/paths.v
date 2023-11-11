@@ -4,11 +4,8 @@ struct Paths {
 mut:
 	root       string
 	tmp        string
-	ui_dev     string
 	ui         string
-	sound_dev  string
 	sound      string
-	icon_dev   string
 	icon       string
 	cfg_dir    string
 	cfg_file   string
@@ -16,24 +13,27 @@ mut:
 	cache_file string
 }
 
+const (
+	app_name = 'emoji-mart'
+	paths    = &Paths{}
+)
+
 fn init() {
 	mut p := &Paths{}
 	unsafe {
 		p = paths
 	}
-	app_root := @VMODROOT
-	p.ui_dev = join_path(app_root, 'ui')
-	p.sound_dev = join_path(app_root, 'assets', 'pop.wav')
-	p.icon_dev = join_path(app_root, 'assets', 'emoji-mart.ico')
-	$if prod {
-		app_tmp := join_path(os.temp_dir(), '${app_name}-@${version}')
-		p.ui = join_path(app_tmp, 'ui')
-		p.sound = join_path(app_tmp, 'assets', 'pop.wav')
-		p.icon = join_path(app_tmp, 'assets', 'icon.ico')
+	$if embed ? {
+		ui_dir := join_path(os.temp_dir(), '${app_name}-@${version}')
+		p.ui = join_path(ui_dir, 'ui')
+		p.sound = join_path(ui_dir, 'assets', 'pop.wav')
+		p.icon = join_path(ui_dir, 'assets', 'icon.ico')
+		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
 	} $else {
-		p.ui = p.ui_dev
-		p.sound = p.sound_dev
-		p.icon = p.icon_dev
+		app_root := @VMODROOT
+		p.ui = join_path(app_root, 'ui')
+		p.sound = join_path(app_root, 'assets', 'pop.wav')
+		p.icon = join_path(app_root, 'assets', 'emoji-mart.ico')
 	}
 	// Config
 	p.cfg_dir = join_path(os.config_dir() or { panic(err) }, app_name)

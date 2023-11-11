@@ -11,15 +11,7 @@ mut:
 	proc   os.Process // OS process spawned when running the app with `v -d dev`
 }
 
-const (
-	app_name = 'emoji-mart'
-	paths    = &Paths{}
-)
-
 fn main() {
-	$if embed ? {
-		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
-	}
 	mut app := App{
 		window: webview.create()
 	}

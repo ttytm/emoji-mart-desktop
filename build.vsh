@@ -28,9 +28,11 @@ fn build_ui() ! {
 }
 
 fn gen_embeds() ! {
+	println('Embedding files')
 	chdir(app_root)!
 	// Use LVbag to generate the embed file lists.
-	system('lvb -bag ui -o src/lvb.v -f dist/ui')
+	lvb := find_abs_path_of_executable('lvb') or { './lvb' }
+	execute_opt('${lvb} -bag ui -o src/lvb.v -f dist/ui')!
 	// Append a version const.
 	mut f := open_append('src/lvb.v')!
 	// `git describe --tags` -> v0.3.0@g3804a82. Use in App when constants evaluate at comptime.
@@ -38,12 +40,13 @@ fn gen_embeds() ! {
 	f.write_string(version)!
 	f.close()
 	// Format.
-	system('v fmt -w src/lvb.v')
+	execute_opt('v fmt -w src/lvb.v')!
 }
 
 fn build_bin(flags string) ! {
 	cc := $if macos { 'clang' } $else { 'gcc' }
-	cmd := 'v -cc ${cc} ${flags} -o ${app_root}/dist/emoji-mart ${app_root}/src'
+	out_file := 'emoji-mart' + $if windows { '.exe' } $else { '' }
+	cmd := 'v -cc ${cc} ${flags} -o ${app_root}/dist/${out_file} ${app_root}/src'
 	println('Building binary: ${cmd}')
 	execute_opt($if windows { 'powershell -command ${cmd}' } $else { cmd })!
 }
@@ -52,18 +55,14 @@ fn build(cmd cli.Command) ! {
 	if !cmd.flags.get_bool('skip-ui')! {
 		build_ui()!
 	}
-	gen_embeds()!
-	mut flags := if cmd.name == 'dev' { '' } else { '-prod' }
-	if cmd.flags.get_bool('appimage')! {
-		flags += ' -d appimage'
-		defer {
-			build_appimage() or {
-				eprintln('Failed building appimage. ${err}')
-				exit(0)
-			}
-		}
+	if !cmd.flags.get_bool('skip-bin')! {
+		gen_embeds()!
+		mut flags := '-d embed' + if cmd.name == 'dev' { '' } else { ' -prod' }
+		build_bin(flags)!
 	}
-	build_bin(flags)!
+	if cmd.flags.get_bool('appimage')! {
+		build_appimage() or { return error('Failed building appimage. "${err}"') }
+	}
 }
 
 fn build_appimage() ! {
@@ -102,6 +101,11 @@ mut cmd := cli.Command{
 			name: 'appimage'
 			description: 'Create an appimage from the built binary.'
 			global: true
+		},
+		cli.Flag{
+			flag: .bool
+			name: 'skip-bin'
+			description: 'Skip building the binary.'
 		},
 		cli.Flag{
 			flag: .bool
