@@ -1,7 +1,7 @@
 # Emoji Mart Desktop App
 
-An emoji picker desktop application - built to serve as an example of using [webview](https://github.com/ttytm/webview) with a modern web framework.
-Nevertheless, it is a real and capable application. So if you just want to use it, nothing should stop you from doing so.
+An emoji picker desktop application - it serves as an example of using [webview](https://github.com/ttytm/webview) with a modern web framework.
+Nonetheless, it is a real and capable application, and nothing should stop you from simply using it.
 
 ## Contents
 
@@ -16,19 +16,42 @@ Nevertheless, it is a real and capable application. So if you just want to use i
 
 ## Application / Usage
 
-It is developed with focus on systems running GNU Linux, but can also be used other platforms.
-
-<div align="center">
-  <img width="412" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/bce465bb-9d72-4c96-af94-e3a758657bc3">
-  <img width="412" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/b01099d8-6883-4c4b-9346-975bf675b0a4">
-</div>
+<table align="center">
+<tr>
+  <th>Linux</th>
+  <th>Windows</th>
+  <th>macOS</th>
+</tr>
+<tr align="center">
+  <td>
+    <img width="400" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/bce465bb-9d72-4c96-af94-e3a758657bc3">
+  </td>
+  <td>
+    <img width="340" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/2a7b86d5-9f85-4a8f-afc6-2bbb7f4a6ffe">
+  </td>
+  <td>
+    <img width="450" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/7c75c993-5445-4d1e-9090-a6d8de02c90e">
+  </td>
+</tr>
+<tr align="center">
+  <td>
+    <img width="400" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/b01099d8-6883-4c4b-9346-975bf675b0a4">
+  </td>
+  <td>
+    <img width="340" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/dbc3eba3-cd42-4d3a-831a-5ce431a519e4">
+  </td>
+  <td>
+    <img width="450" src="https://github.com/ttytm/emoji-mart-desktop/assets/34311583/c92964e0-0200-4838-920f-bb9c905ea355">
+  </td>
+</table>
 
 ### Installation
 
-- Linux: Download an Appimage from the [releases](https://github.com/ttytm/emoji-mart-desktop/releases) page.
-- macOS/Windows: There is no bundling atm. So it is required to self compile it and keep the binary and ui files side by side. See [Building](#preparation).
+- The projects [GitHub releases page](https://github.com/ttytm/emoji-mart-desktop/releases) provides prebuilt binaries for GNU/Linux, Windows and macOS.
 
 ### Config
+
+Config values that are set via the in-app menu are saved for the next run.
 
 ```toml
 # Lin: ~/.config/emoji-mart/
@@ -69,8 +92,6 @@ v $HOME/.vmodules/webview/build.vsh
 If you just want to build the application for usage you can now run `./build.vsh`.
 
 - The `dist/` directory will contain the build output.
-- On macOS and Windows it's currently required that the contents of `dist/` (`emoji-mart` / `emoji-mart.exe` and `ui/`) are kept next to each other.
-- On Linux you can run `./build.vsh --appimage` (requires `appimage-builder`) to build the AppImage.
 
 ### Building and Running in a Development Context
 
@@ -85,25 +106,29 @@ Just like in the browser most changes on the UI will be immediately reflected in
 - Run the app with the `dev` flag - this runs a vite dev server and connects to its localhost instance
 
   ```sh
-  # install the node modules if it's the first run
-  # npm i --prefix ui/
-
+  # Install the node modules beforehand if it's the first run.
+  npm i --prefix ui/
+  ```
+  ```sh
   v -d dev run .
-
+  ```
+  ```sh
   # On Windows, it is recommended to use `gcc` for compilation.
   v -cc gcc -d dev run .
   ```
 
 #### Example 2 - serve the prebuilt site
 
-This is the regular build approach and what our final app is doing.
+This is the regular build approach and how our final app is working.
 
 - Build the UI - this uses SvelteKit as a static site generator
 
   ```sh
-  # install the node modules if it's the first run
-  # npm i --prefix ui/
+  # Install the node modules beforehand if it's the first run.
+  npm i --prefix ui/
+  ```
 
+  ```sh
   npm run build --prefix ui/
   ```
 
@@ -111,7 +136,8 @@ This is the regular build approach and what our final app is doing.
 
   ```sh
   v run .
-
+  ```
+  ```sh
   # Windows
   v -cc gcc run .
   ```
@@ -119,6 +145,11 @@ This is the regular build approach and what our final app is doing.
 <br>
 
 I hope this quick start guide and the examples in the repositories source code help on the way to release your own UI project.
+
+## Related Projects
+
+- [webview](https://github.com/ttytm/webview) - V module that allows to create a system level application, while using modern web technologies for the  UI.
+- [LVbag](https://github.com/ttytm/LVbag) - CLI tool to generate embedded file lists.
 
 ## Credits
 
