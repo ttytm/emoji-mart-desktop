@@ -8,6 +8,13 @@ const (
 	sound = $embed_file('../assets/audio/pop.wav')
 )
 
+fn init() {
+	write_embedded() or {
+		eprintln('Failed writing embedded files: `${err}`')
+		exit(1)
+	}
+}
+
 fn write_embedded() ! {
 	if !os.exists(paths.ui) {
 		dist_ui_path := os.join_path('dist', 'ui')
