@@ -32,6 +32,7 @@ fn init() {
 		app_root := @VMODROOT
 		p.ui = join_path(app_root, 'ui')
 		p.sound = join_path(app_root, 'assets', 'pop.wav')
+		p.sound = join_path(app_root, 'assets', 'audio', 'pop.wav')
 		p.icon = join_path(app_root, 'assets', 'emoji-mart.ico')
 	}
 	// Config
