@@ -3,7 +3,6 @@ import os { join_path }
 struct Paths {
 mut:
 	root       string
-	tmp        string
 	ui         string
 	sound      string
 	icon       string
@@ -24,10 +23,10 @@ fn init() {
 		p = paths
 	}
 	$if embed ? {
-		ui_dir := join_path(os.temp_dir(), '${app_name}-@${version}')
-		p.ui = join_path(ui_dir, 'ui')
-		p.sound = join_path(ui_dir, 'assets', 'pop.wav')
-		p.icon = join_path(ui_dir, 'assets', 'icon.ico')
+		tmp_dir := join_path(os.temp_dir(), '${app_name}-@${version}')
+		p.ui = join_path(tmp_dir, 'ui')
+		p.sound = join_path(tmp_dir, 'assets', 'pop.wav')
+		p.icon = join_path(tmp_dir, 'assets', 'icon.ico')
 		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
 	} $else {
 		app_root := @VMODROOT
