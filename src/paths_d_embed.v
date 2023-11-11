@@ -1,8 +1,10 @@
 import os
 
 const (
+	// Example of two static embedded files.
 	icon  = $embed_file('../assets/emoji-mart.ico')
-	// Needs to be in another dir else V embeds the wrong file.
+	// Note: Currently, this one must be in a differnt dir, else V embeds the wrong file.
+	// Else the path would be `../assets/pop.wav`.
 	sound = $embed_file('../assets/audio/pop.wav')
 )
 
