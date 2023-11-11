@@ -18,10 +18,12 @@
 			);
 		}
 		navigator.clipboard.writeText(emojiData.native);
+		// Send the localStorage, which is updated upon selection, to the backend to cache frequently used emojis.
 		window.handle_select(localStorage.getItem('emoji-mart.frequently')!);
 	}
 
 	onMount(async () => {
+		// Populate the frequently-used-emojis-localStorage with the cached storage from the backend.
 		localStorage.setItem('emoji-mart.frequently', await window.get_cache());
 		$config = await get_config();
 		pickerElem.appendChild(
