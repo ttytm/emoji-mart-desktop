@@ -1,6 +1,6 @@
 # == V
 # Binaries for programs and plugins
-emoji-picker
+emoji-mart-desktop
 *.exe
 *.exe~
 *.so
