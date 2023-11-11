@@ -27,7 +27,7 @@ jobs:
       - name: Setup modules
         run: |
           v install
-          ~/.vmodules/webview/build.vsh
+          ~/.vmodules/webview/build.vsh --silent
       - name: Cache
         uses: actions/cache/save@v3
         with:
