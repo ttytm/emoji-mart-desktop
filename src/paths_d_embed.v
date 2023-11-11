@@ -16,8 +16,8 @@ fn write_embedded() ! {
 				return error('failed to prepare path for ${file.path}')
 			}
 			out_path = os.join_path(paths.ui, out_path)
-			os.mkdir_all(os.dir(out_path)) or { panic(err) }
-			os.write_file(out_path, file.to_string()) or { panic(err) }
+			os.mkdir_all(os.dir(out_path))!
+			os.write_file(out_path, file.to_string())!
 		}
 	}
 	if !os.exists(paths.sound) {
