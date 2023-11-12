@@ -2,12 +2,8 @@ import net
 import vweb
 import os
 
-struct Context {
-	vweb.Context
-}
-
-pub fn (mut ctx Context) index() vweb.Result {
-	return ctx.html(os.read_file('${paths.ui}/build/index.html') or { panic(err) })
+pub fn (mut app App) index() vweb.Result {
+	return app.html(os.read_file('${paths.ui}/build/index.html') or { panic(err) })
 }
 
 fn get_idle_port(port int) int {
@@ -20,9 +16,8 @@ fn get_idle_port(port int) int {
 // We use vweb to serve to UI on localhost.
 fn (mut app App) serve() {
 	app.port = get_idle_port(34763)
-	spawn fn (port int) {
-		mut web_ctx := Context{}
-		web_ctx.mount_static_folder_at('${paths.ui}/build', '/')
-		vweb.run(web_ctx, port)
-	}(app.port)
+	spawn fn [mut app] () {
+		app.mount_static_folder_at('${paths.ui}/build', '/')
+		vweb.run(app, app.port)
+	}()
 }
