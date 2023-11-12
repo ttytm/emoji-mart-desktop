@@ -19,10 +19,10 @@ fn write_embedded() ! {
 	if !os.exists(paths.ui) {
 		dist_ui_path := os.join_path('dist', 'ui')
 		for file in ui {
-			_, mut out_path := file.path.rsplit_once(dist_ui_path) or {
+			_, rel_file_path := file.path.rsplit_once(dist_ui_path) or {
 				return error('failed to prepare path for ${file.path}')
 			}
-			out_path = os.join_path(paths.ui, out_path)
+			out_path := os.join_path(paths.ui, rel_file_path)
 			os.mkdir_all(os.dir(out_path))!
 			os.write_file(out_path, file.to_string())!
 		}
