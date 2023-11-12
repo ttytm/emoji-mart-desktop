@@ -34,8 +34,8 @@ fn (mut app App) run() {
 }
 
 fn (mut app App) end() {
-	app.config.save() or { panic('Failed saving config. ${err}') }
-	app.cache.save() or { panic('Failed loading cache. ${err}') }
+	app.config.save() or { panic('failed to save config. ${err}') }
+	app.cache.save() or { panic('failed to load cache. ${err}') }
 	$if dev ? {
 		app.proc.signal_pgkill()
 	}

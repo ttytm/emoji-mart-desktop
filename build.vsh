@@ -5,9 +5,9 @@ import os
 
 const app_root = @VMODROOT
 
-fn exec(command string, work_folder string, args []string) ! {
-	mut p := new_process(find_abs_path_of_executable(command) or {
-		return error('Failed finding ${command}.\nMake sure ${command} is executable.')
+fn exec(cmd string, work_folder string, args []string) ! {
+	mut p := new_process(find_abs_path_of_executable(cmd) or {
+		return error('failed to find `${cmd}`.\nMake sure ${cmd} is executable.')
 	})
 	p.set_work_folder(work_folder)
 	p.set_args(args)
@@ -61,7 +61,7 @@ fn build(cmd cli.Command) ! {
 		build_bin(flags)!
 	}
 	if cmd.flags.get_bool('appimage')! {
-		build_appimage() or { return error('Failed building appimage. "${err}"') }
+		build_appimage() or { return error('failed to build appimage. "${err}"') }
 	}
 }
 

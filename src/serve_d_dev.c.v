@@ -5,7 +5,7 @@ import term
 // and connects to the localhost port on which the application is being served on.
 fn (mut app App) serve() {
 	mut npm_path := os.find_abs_path_of_executable('npm') or {
-		eprintln('Failed finding node package manager.\nMake sure npm is executable.')
+		eprintln('failed to find node package manager.\nMake sure npm is executable.')
 		exit(0)
 	}
 	mut p := os.new_process(npm_path)
@@ -26,7 +26,7 @@ fn (mut app App) serve() {
 	}
 	app.proc = p
 	if app.port == 0 {
-		eprintln('Failed serving to localhost.')
+		eprintln('failed to serve to localhost.')
 		app.proc.signal_pgkill()
 		exit(0)
 	}

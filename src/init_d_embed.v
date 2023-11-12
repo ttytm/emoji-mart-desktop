@@ -10,7 +10,7 @@ const (
 
 fn init() {
 	write_embedded() or {
-		eprintln('Failed writing embedded files: `${err}`')
+		eprintln('failed to write embedded files: `${err}`')
 		exit(1)
 	}
 }
