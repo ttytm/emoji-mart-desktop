@@ -1,10 +1,8 @@
 import webview { Webview }
-import vweb
 import os
 
 [heap]
 struct App {
-	vweb.Context
 	window &Webview
 mut:
 	config Config
