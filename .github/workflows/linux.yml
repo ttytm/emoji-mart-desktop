@@ -57,8 +57,7 @@ jobs:
             flag: -cstrict
       fail-fast: false
     env:
-      # VFLAGS: -cg -cc ${{ matrix.cc }} ${{ matrix.flag }}
-      VFLAGS: -cg -cc ${{ matrix.cc }} # currently -cstrict won't work with miniaudio
+      VFLAGS: -cg -cc ${{ matrix.cc }} ${{ matrix.flag }}
     defaults:
       run:
         working-directory: ${{ env.REPO_NAME }}
