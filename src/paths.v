@@ -26,7 +26,7 @@ fn get_paths() !Paths {
 		p.icon = join_path(tmp_dir, 'assets', 'icon.ico')
 	} $else {
 		app_root := @VMODROOT
-		p.ui = join_path(app_root, 'ui')
+		p.ui = join_path(app_root, 'ui', 'build')
 		p.sound = join_path(app_root, 'assets', 'audio', 'pop.wav')
 		p.icon = join_path(app_root, 'assets', 'emoji-mart.ico')
 	}

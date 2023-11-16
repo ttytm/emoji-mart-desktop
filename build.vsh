@@ -24,7 +24,7 @@ fn build_ui() ! {
 	// Create `dist/` - fail is next to impossible as `dist/` does not exist at this point
 	mkdir_all('dist/ui')!
 	// Copy UI files to dist
-	cp_all('ui/build/', 'dist/ui/build', false)!
+	cp_all('ui/build/', 'dist/ui/', false)!
 }
 
 fn gen_embeds() ! {
