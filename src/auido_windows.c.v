@@ -5,8 +5,7 @@ import miniaudio as ma
 
 fn play_wav_file() {
 	engine := &ma.Engine{}
-	result := ma.engine_init(ma.null, engine)
-	if result != .success {
+	if ma.engine_init(ma.null, engine) != .success {
 		panic('failed to initialize audio engine.')
 	}
 	defer {
