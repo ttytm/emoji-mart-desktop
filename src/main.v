@@ -1,7 +1,7 @@
 import webview { Webview }
 import os
 
-[heap]
+@[heap]
 struct App {
 	window &Webview
 mut:
