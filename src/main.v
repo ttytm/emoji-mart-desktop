@@ -28,7 +28,7 @@ fn (mut app App) run() ! {
 	$if dev ? {
 		app.window.serve_dev(paths.ui)!
 	} $else {
-		app.window.serve_static(paths.ui)
+		app.window.serve_static(paths.ui)!
 	}
 	app.window.run()
 	app.end()
