@@ -12,10 +12,8 @@ mut:
 	cache_file string
 }
 
-const (
-	app_name = 'emoji-mart'
-	paths    = get_paths()!
-)
+const app_name = 'emoji-mart'
+const paths = get_paths()!
 
 fn get_paths() !Paths {
 	mut p := Paths{}
