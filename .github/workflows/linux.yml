@@ -51,10 +51,12 @@ jobs:
     strategy:
       matrix:
         cc: [tcc, gcc, clang]
-        flag: ['', -cstrict]
+        flag: ['', '-W -cstrict']
         exclude:
           - cc: clang
-            flag: -cstrict
+            flag: '-W -cstrict'
+          - cc: tcc
+            flag: '-W -cstrict'
       fail-fast: false
     env:
       VFLAGS: -cg -cc ${{ matrix.cc }} ${{ matrix.flag }}
