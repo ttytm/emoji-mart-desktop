@@ -109,9 +109,11 @@ Just like in the browser most changes on the UI will be immediately reflected in
   # Install the node modules beforehand if it's the first run.
   npm i --prefix ui/
   ```
+
   ```sh
   v -d dev run .
   ```
+
   ```sh
   # On Windows, it is recommended to use `gcc` for compilation.
   v -cc gcc -d dev run .
@@ -137,6 +139,7 @@ This is the regular build approach and how our final app is working.
   ```sh
   v run .
   ```
+
   ```sh
   # Windows
   v -cc gcc run .
@@ -148,7 +151,7 @@ I hope this quick start guide and the examples in the repositories source code h
 
 ## Related Projects
 
-- [webview](https://github.com/ttytm/webview) - V module that allows to create a system level application, while using modern web technologies for the  UI.
+- [webview](https://github.com/ttytm/webview) - V module that allows to create a system level application, while using modern web technologies for the UI.
 - [LVbag](https://github.com/ttytm/LVbag) - CLI tool to generate embedded file lists.
 
 ## Credits
